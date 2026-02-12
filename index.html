@@ -1,19 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>App ICFES - Abel González</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>App Educativa</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="contenedor">
-    <h1>Bienvenido a mi Plataforma ICFES</h1>
-    <p>Proyecto educativo desarrollado por Abel González</p>
+<div class="contenedor" id="registro">
+    <h1>Registro del Estudiante</h1>
 
-    <a href="app/index.html" class="boton">Entrar a la Aplicación</a>
+    <input type="text" id="nombre" placeholder="Nombre del estudiante">
+    <input type="text" id="grado" placeholder="Grado (ej: 10°)">
+
+    <button onclick="iniciarQuiz()">Iniciar Quiz</button>
+</div>
+
+
+    <div class="contenedor" id="quiz" style="display:none;">
+
+  <h1>Quiz de Física Maria Inmaculada</h1>
+
+  <!-- 🟡 MENÚ DE TEMAS -->
+  <div id="menuTemas">
+    <h2>Selecciona el tema</h2>
+
+    <button class="btnTema" data-json="preguntas.json">
+      Movimiento Uniformemente Acelerado (MUA)
+    </button>
+
+    <button class="btnTema" data-json="trabajo_energia.json">
+      Trabajo y Energía
+    </button>
   </div>
 
+  <!-- 🔴 ZONA DE PREGUNTAS (OCULTA AL INICIO) -->
+  <div id="zonaPreguntas" style="display:none;">
+
+    <h2 id="tiempoTotal" style="font-size:32px; color:#d32f2f; text-align:center;">
+  ⏰ Tiempo total: 00:00
+</h2>
+
+    <p id="contador"></p>
+    <p id="pregunta"></p>
+
+    <img id="grafico" src="" alt="Gráfico de la pregunta"
+         style="max-width:100%; display:none;">
+
+    <p id="tiempo">⏱️ Tiempo: 10 s</p>
+
+    <div class="opciones">
+      <button onclick="responder(0)"></button>
+      <button onclick="responder(1)"></button>
+      <button onclick="responder(2)"></button>
+      <button onclick="responder(3)"></button>
+    </div>
+
+    <p id="resultado"></p>
+
+    <button id="btnReiniciar" onclick="reiniciar()">Reiniciar Quiz</button>
+
+
+
+    
+
+  </div>
+</div>
+
+
+<div id="historial" style="display:none; margin-top:20px;">
+  <h3>📊 Historial de intentos</h3>
+  <ul id="listaHistorial"></ul>
+</div>
+
+<button id="btnHistorial" style="display:none;">
+  Ver historial
+</button>
+
+<button id="btnExportar" style="display:none;">
+  Exportar resultados a Excel (CSV)
+
+</button>
+
+
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
