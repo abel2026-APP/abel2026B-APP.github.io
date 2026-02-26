@@ -342,7 +342,7 @@ function exportarResultados() {
 
   const claveIngresada = prompt("Ingrese la clave del profesor:");
 
-  if (claveIngresada !== "1234") {
+  if (claveIngresada !== "2118") {
     alert("Clave incorrecta. Acceso denegado.");
     return;
   }
@@ -376,5 +376,6 @@ function exportarResultados() {
   link.click();
   document.body.removeChild(link);
 }
+
 
 
