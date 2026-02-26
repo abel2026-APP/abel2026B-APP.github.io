@@ -38,6 +38,8 @@ let preguntas = [];   // ahora se llenará desde preguntas.json
 
 let indice = 0;
 let puntaje = 0;
+// agregue esta 
+let detalleRespuestas = [];
 
 let tiempo = 180;          // segundos por pregunta
 let tiempoRestante = 180;
@@ -119,7 +121,10 @@ function responder(opcion) {
 
     clearInterval(temporizador);
 
-    if (opcion === preguntas[indice].correcta) {
+    const preguntaActual = preguntas[indice];
+    const esCorrecta = opcion === preguntaActual.correcta;
+
+    if (esCorrecta) {
         puntaje++;
         resultadoEl.textContent = "✅ Correcto";
         resultadoEl.style.color = "green";
@@ -127,6 +132,14 @@ function responder(opcion) {
         resultadoEl.textContent = "❌ Incorrecto";
         resultadoEl.style.color = "red";
     }
+
+    // 🔥 Guardar detalle
+    detalleRespuestas.push({
+        pregunta: preguntaActual.texto,
+        respuestaEstudiante: preguntaActual.opciones[opcion],
+        respuestaCorrecta: preguntaActual.opciones[preguntaActual.correcta],
+        estado: esCorrecta ? "Correcta" : "Incorrecta"
+    });
 
     setTimeout(() => {
         indice++;
@@ -143,6 +156,7 @@ function responder(opcion) {
 function reiniciar() {
   indice = 0;
   puntaje = 0;
+  detalleRespuestas = [];  // 🔥 limpiar respuestas anteriores
 
   // ⏱️ Reiniciar temporizador por seguridad
   clearInterval(temporizador);
@@ -328,22 +342,27 @@ function exportarResultados() {
 
   const claveIngresada = prompt("Ingrese la clave del profesor:");
 
-  if (claveIngresada !=="1234") {
+  if (claveIngresada !== "1234") {
     alert("Clave incorrecta. Acceso denegado.");
     return;
   }
 
-  const resultados = JSON.parse(localStorage.getItem("resultadosQuiz")) || [];
-
-  if (resultados.length === 0) {
+  if (detalleRespuestas.length === 0) {
     alert("No hay resultados para exportar.");
     return;
   }
 
-  let csv = "Nombre;Puntaje;Correctas;Incorrectas;Tiempo;Fecha\n";
+  const minutos = Math.floor(tiempoTotal / 60);
+  const segundos = tiempoTotal % 60;
 
-  resultados.forEach(r => {
-    csv += `${r.nombre};${r.puntaje};${r.correctas};${r.incorrectas};${r.tiempo};${r.fecha}\n`;
+  let csv = "Estudiante;" + nombreEstudiante + "\n";
+  csv += "Tiempo total;" + `${minutos} min ${segundos} s` + "\n";
+  csv += "Puntaje;" + `${puntaje}/${preguntas.length}` + "\n\n";
+
+  csv += "Pregunta;Respuesta Estudiante;Respuesta Correcta;Estado\n";
+
+  detalleRespuestas.forEach(r => {
+    csv += `"${r.pregunta}";"${r.respuestaEstudiante}";"${r.respuestaCorrecta}";${r.estado}\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -351,15 +370,11 @@ function exportarResultados() {
 
   const link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", "Resultados_ICFES.csv");
+  link.setAttribute("download", `Resultado_${nombreEstudiante}.csv`);
 
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
-
-
-
-
 
 
