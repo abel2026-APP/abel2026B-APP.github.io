@@ -41,8 +41,8 @@ let puntaje = 0;
 // agregue esta 
 let detalleRespuestas = [];
 
-let tiempo = 180;          // segundos por pregunta
-let tiempoRestante = 180;
+let tiempo = 240;          // segundos por pregunta
+let tiempoRestante = 240;
 let temporizador = null;
 
 
@@ -376,6 +376,7 @@ function exportarResultados() {
   link.click();
   document.body.removeChild(link);
 }
+
 
 
 
